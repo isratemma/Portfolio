@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-scroll';
 import { FiSun, FiMoon, FiMenu, FiX } from 'react-icons/fi';
+import scrollTo from '../utils/scrollTo';
 import './Navbar.css';
 
 const navLinks = ['Home', 'About', 'Skills', 'Projects', 'Services', 'Resume', 'Contact'];
@@ -9,9 +9,21 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
+  const [active, setActive] = useState('home');
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+      // update active section
+      const sections = navLinks.map(l => l.toLowerCase());
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sections[i]);
+        if (el && window.scrollY >= el.offsetTop - 120) {
+          setActive(sections[i]);
+          break;
+        }
+      }
+    };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -19,7 +31,7 @@ const Navbar = () => {
   return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
       <div className="nav-container">
-        <div className="nav-logo">
+        <div className="nav-logo" onClick={() => scrollTo('home')} style={{ cursor: 'pointer' }}>
           <span className="logo-white">Israt </span>
           <span className="logo-blue">Jahan </span>
           <span className="logo-white">Ema</span>
@@ -28,17 +40,13 @@ const Navbar = () => {
         <ul className={`nav-links ${menuOpen ? 'open' : ''}`}>
           {navLinks.map((link) => (
             <li key={link}>
-              <Link
-                to={link.toLowerCase()}
-                smooth={true}
-                duration={500}
-                offset={-80}
-                activeClass="active"
-                spy={true}
-                onClick={() => setMenuOpen(false)}
+              <a
+                className={active === link.toLowerCase() ? 'active' : ''}
+                href={`#${link.toLowerCase()}`}
+                onClick={(e) => { e.preventDefault(); scrollTo(link.toLowerCase()); setMenuOpen(false); }}
               >
                 {link}
-              </Link>
+              </a>
             </li>
           ))}
         </ul>
@@ -51,9 +59,12 @@ const Navbar = () => {
           >
             {darkMode ? <FiSun /> : <FiMoon />}
           </button>
-          <Link to="contact" smooth={true} duration={500} offset={-80}>
-            <button className="btn-primary hire-btn">Hire Me</button>
-          </Link>
+          <button
+            className="btn-primary hire-btn"
+            onClick={() => scrollTo('contact')}
+          >
+            Hire Me
+          </button>
           <button
             className="hamburger"
             onClick={() => setMenuOpen(!menuOpen)}

@@ -1,24 +1,29 @@
 import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
-import { Link } from 'react-scroll';
+import scrollTo from '../utils/scrollTo';
 import './Footer.css';
+
+const links = ['home', 'about', 'skills', 'projects', 'services', 'resume', 'contact'];
 
 const Footer = () => {
   return (
     <footer className="footer">
       <div className="container footer-inner">
-        <div className="footer-logo">
+        <div className="footer-logo" onClick={() => scrollTo('home')} style={{ cursor: 'pointer' }}>
           <span className="logo-white">Israt </span>
           <span className="logo-blue">Jahan </span>
           <span className="logo-white">Ema</span>
         </div>
 
         <ul className="footer-links">
-          {['home','about','skills','projects','services','resume','contact'].map(link => (
+          {links.map(link => (
             <li key={link}>
-              <Link to={link} smooth={true} duration={500} offset={-80}>
+              <a
+                href={`#${link}`}
+                onClick={(e) => { e.preventDefault(); scrollTo(link); }}
+              >
                 {link.charAt(0).toUpperCase() + link.slice(1)}
-              </Link>
+              </a>
             </li>
           ))}
         </ul>

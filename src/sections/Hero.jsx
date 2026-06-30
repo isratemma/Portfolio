@@ -1,9 +1,9 @@
 import { FiArrowRight, FiDownload, FiUser } from 'react-icons/fi';
 import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
-import { Link } from 'react-scroll';
-import { SiMongodb, SiNodedotjs, SiExpress } from 'react-icons/si';
+import { SiMongodb, SiNodedotjs } from 'react-icons/si';
 import { FaReact } from 'react-icons/fa';
+import scrollTo from '../utils/scrollTo';
 import './Hero.css';
 
 const Hero = () => {
@@ -13,7 +13,7 @@ const Hero = () => {
         {/* Left Side */}
         <div className="hero-left">
           <div className="hello-badge">
-            <span>👋</span> Hello, I'm
+            <span>👋</span> Hello, I&apos;m
           </div>
 
           <h1 className="hero-name">
@@ -32,16 +32,12 @@ const Hero = () => {
           </p>
 
           <div className="hero-btns">
-            <Link to="projects" smooth={true} duration={500} offset={-80}>
-              <button className="btn-primary">
-                View Projects <FiArrowRight />
-              </button>
-            </Link>
-            <Link to="contact" smooth={true} duration={500} offset={-80}>
-              <button className="btn-outline">
-                Hire Me <FiUser />
-              </button>
-            </Link>
+            <button className="btn-primary" onClick={() => scrollTo('projects')}>
+              View Projects <FiArrowRight />
+            </button>
+            <button className="btn-outline" onClick={() => scrollTo('contact')}>
+              Hire Me <FiUser />
+            </button>
             <a href="/resume.pdf" download>
               <button className="btn-outline">
                 Download Resume <FiDownload />
